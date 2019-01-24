@@ -18,7 +18,7 @@ Each ILP Prepare packet is sent as the body of an HTTP request to the peer's ser
 
 ## Specification
 
-This is a minimal protocol built on HTTP. HTTP/2 is RECOMMENDED for performance reasons, although HTTP/1.1 MAY also be used. Implementations SHOULD support HTTP version negotiation via Application Protocol Negotiation (ALPN).
+This is a minimal protocol built on HTTP. HTTP/2 is HIGHLY RECOMMENDED for performance reasons, although HTTP/1.1 MAY also be used. Implementations SHOULD support HTTP version negotiation via Application Protocol Negotiation (ALPN).
 
 ### Authentication
 
@@ -52,7 +52,7 @@ Content-Type: application/ilp+octet-stream
 < Body: Binary OER-Encoded ILP Fulfill or Reject Packet >
 ```
 
-All ILP Packets MUST be returned with the HTTP status code `200: OK`. An endpoint MAY return HTTP errors if a request is malformed or unauthenticated.
+All ILP Packets MUST be returned with the HTTP status code `200: OK`. An endpoint MAY return standard HTTP errors, including but not limited to: a malformed or unauthenticated request, rate limiting, or an unresponsive upstream service. Connectors SHOULD either retry the request, if applicable, or relay an ILP Reject packet back to the original sender with an appropriate [Final or Temporary error code](./0027-interledger-protocol-4/0027-interledger-protocol-4#error-codes).
 
 ## Appendix A: Settlement
 

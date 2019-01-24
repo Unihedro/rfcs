@@ -14,7 +14,7 @@ Scaling Interledger infrastructure to handle large volumes of ILP packets requir
 
 In an ILP Over HTTP connection, both peers run HTTP servers with accessible HTTPS endpoints. When peering, the peers exchange their respective URLs, authentication tokens or TLS certificates, ILP addresses, and settlement-related details.
 
-Each ILP Prepare packet is sent as the body of an HTTP request to the peer's server endpoint. The HTTP response body will contain either the ILP Fulfill or Reject packet.
+Each ILP Prepare packet is sent as the body of an HTTP request to the peer's server endpoint. ILP Fulfill or Reject packets are returned as the body of the HTTP response.
 
 ## Specification
 
@@ -27,12 +27,12 @@ Peers MAY use any standard HTTP authentication mechanism to authenticate incomin
 ### Request
 
 ```http
-POST /ilp HTTP/2.0
-Accept: application/octet-string
-Content-Type: application/octet-string
+POST /ilp HTTP/x.x
+Accept: application/ilp+octet-stream
+Content-Type: application/ilp+octet-stream
 Authorization: Bearer zxcljvoizuu09wqqpowipoalksdflksjdgxclvkjl0s909asdf
 Host: connector.example
-X-ILP-Destination: example.usd.connector.account
+ILP-Destination: example.usd.connector.account
 
 < Body: Binary OER-Encoded ILP Prepare Packet >
 ```
@@ -40,17 +40,19 @@ X-ILP-Destination: example.usd.connector.account
 **Field Details:**
 
 - **Path** - A connector MAY specify any HTTP path for their peer to send ILP packets to.
-- **X-ILP-Destination Header** - (Optional) It is RECOMMENDED to set this header to the destination ILP address from the ILP packet. This enables standard HTTP load balancers to route packets to particular connector instances without parsing the ILP packet.
+- **ILP-Destination Header** - (Optional) It is RECOMMENDED to set this header to the destination ILP address from the ILP packet. This enables standard HTTP load balancers to route packets to particular connector instances without parsing the ILP packet.
 - **Body** - ILP Packet encoded using OER, as specified in [RFC 27: Interledger Protocol V4](./0027-interledger-protocol-4/0027-interledger-protocol-4.md).
 
 ### Response
 
 ```http
-HTTP/2.0 200 OK
-Content-Type: application/octet-string
+HTTP/x.x 200 OK
+Content-Type: application/ilp+octet-stream
 
 < Body: Binary OER-Encoded ILP Fulfill or Reject Packet >
 ```
+
+All ILP Packets MUST be returned with the HTTP status code `200: OK`. An endpoint MAY return HTTP errors if a request is malformed or unauthenticated.
 
 ## Appendix A: Settlement
 

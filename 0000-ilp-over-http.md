@@ -22,7 +22,7 @@ This is a minimal protocol built on HTTP. HTTP/2 is HIGHLY RECOMMENDED for perfo
 
 ### Authentication
 
-Peers MAY use any standard HTTP authentication mechanism to authenticate incoming requests. Bearer Tokens or TLS Client Certificates are RECOMMENDED.
+Peers MAY use any standard HTTP authentication mechanism to authenticate incoming requests. TLS Client Certificates are RECOMMENDED for security and performance.
 
 ### Request
 
@@ -32,7 +32,6 @@ Accept: application/ilp+octet-stream
 Content-Type: application/ilp+octet-stream
 Authorization: Bearer zxcljvoizuu09wqqpowipoalksdflksjdgxclvkjl0s909asdf
 Host: connector.example
-ILP-Destination: example.usd.connector.account
 
 < Body: Binary OER-Encoded ILP Prepare Packet >
 ```
@@ -40,7 +39,6 @@ ILP-Destination: example.usd.connector.account
 **Field Details:**
 
 - **Path** - A connector MAY specify any HTTP path for their peer to send ILP packets to.
-- **ILP-Destination Header** - (Optional) It is RECOMMENDED to set this header to the destination ILP address from the ILP packet. This enables standard HTTP load balancers to route packets to particular connector instances without parsing the ILP packet.
 - **Body** - ILP Packet encoded using OER, as specified in [RFC 27: Interledger Protocol V4](./0027-interledger-protocol-4/0027-interledger-protocol-4.md).
 
 ### Response

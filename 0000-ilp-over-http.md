@@ -22,7 +22,7 @@ This is a minimal protocol built on HTTP. HTTP/2 is HIGHLY RECOMMENDED for perfo
 
 ### Authentication
 
-Peers MAY use any standard HTTP authentication mechanism to authenticate incoming requests. TLS Client Certificates are RECOMMENDED for security and performance.
+Peers MAY use any standard HTTP authentication mechanism to authenticate incoming requests. TLS Client Certificates are RECOMMENDED between peers for security and performance, though bearer tokens such as JSON Web Tokens (JWTs) or Macaroons MAY be used instead. Basic authentication (username and password) is NOT RECOMMENDED, because of the additional delay introduced by securely hashing the password.
 
 ### Request
 
@@ -50,7 +50,9 @@ Content-Type: application/ilp+octet-stream
 < Body: Binary OER-Encoded ILP Fulfill or Reject Packet >
 ```
 
-All ILP Packets MUST be returned with the HTTP status code `200: OK`. An endpoint MAY return standard HTTP errors, including but not limited to: a malformed or unauthenticated request, rate limiting, or an unresponsive upstream service. Connectors SHOULD either retry the request, if applicable, or relay an ILP Reject packet back to the original sender with an appropriate [Final or Temporary error code](./0027-interledger-protocol-4/0027-interledger-protocol-4#error-codes).
+All ILP Packets MUST be returned with the HTTP status code `200: OK`.
+
+An endpoint MAY return standard HTTP errors, including but not limited to: a malformed or unauthenticated request, rate limiting, or an unresponsive upstream service. Connectors SHOULD either retry the request, if applicable, or relay an ILP Reject packet back to the original sender with an appropriate [Final or Temporary error code](./0027-interledger-protocol-4/0027-interledger-protocol-4#error-codes). Server errors (status codes 500-599) SHOULD be translated into ILP Reject packets with `T00: Temporary Error` codes.
 
 ## Appendix A: Settlement
 

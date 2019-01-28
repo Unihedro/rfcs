@@ -28,8 +28,8 @@ Peers MAY use any standard HTTP authentication mechanism to authenticate incomin
 
 ```http
 POST /ilp HTTP/x.x
-Accept: application/ilp+octet-stream
-Content-Type: application/ilp+octet-stream
+Accept: application/octet-stream
+Content-Type: application/octet-stream
 Authorization: Bearer zxcljvoizuu09wqqpowipoalksdflksjdgxclvkjl0s909asdf
 Host: connector.example
 
@@ -45,7 +45,7 @@ Host: connector.example
 
 ```http
 HTTP/x.x 200 OK
-Content-Type: application/ilp+octet-stream
+Content-Type: application/octet-stream
 
 < Body: Binary OER-Encoded ILP Fulfill or Reject Packet >
 ```
